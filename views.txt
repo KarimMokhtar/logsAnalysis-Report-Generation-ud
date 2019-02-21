@@ -1,0 +1,9 @@
+create view errors_perDay as
+select date(time) as date, count(*) as num from log where status = '404 NOT FOUND' group by(date) order by(date);
+
+create view total_perDay as
+select date(time) as date, count(*) as total from log group by (date) order by(date);
+
+
+create view precentage as
+select errors_perDay.date,(100.0*num/total) as precentage from total_perDay join errors_perDay on total_perDay.date = errors_perDay.date;
